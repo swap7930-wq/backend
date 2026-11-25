@@ -1,0 +1,57 @@
+
+
+
+    
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Get Email via Access Token</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script>
+ 
+function parseJwt(token) {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    return JSON.parse(atob(base64));
+  } 
+function access(data) {
+
+  var d=parseJwt(data.credential);
+  localStorage.setItem("email",d.email);
+
+                       
+               
+}
+function logout(){
+
+  var email=localStorage.getItem("email");
+  google.accounts.id.disableAutoSelect();
+  google.accounts.id.revoke(email);
+  localStorage.removeItem("email");
+}
+
+    </script>
+</head>
+<body>
+
+   
+    <div id="g_id_onload"
+        data-client_id="866644351861-cgapm528kh6t7tinu738pjaa2n5spe0t.apps.googleusercontent.com"
+        data-login_uri="https://s-w-a.hstn.me/margin.html"
+        data-callback="access"
+        data-auto_prompt="false">
+    </div>
+    <div class="g_id_signin"
+        data-type="standard"
+        data-size="large"
+        data-theme="outline"
+        data-text="sign_in_with"
+        data-shape="rectangular"
+        data-logo_alignment="left">
+    </div>
+<div class="g_id_signout" onclick="logout()">Sign Out</div>
+
+  
+</body>
+</html>

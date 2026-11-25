@@ -1,0 +1,12 @@
+<?php
+  if(!isset($_POST["email"]) or !isset($_POST["rid"]) or !isset($_POST["password"])){
+              die("Invalid post data");
+  }
+
+ $filepath="../../recovery/".str_replace(".","+",$_POST["email"]);
+       
+
+
+
+
+?>
