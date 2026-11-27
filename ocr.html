@@ -1,0 +1,69 @@
+<html>
+<head>
+<script>
+
+function initApplication(){
+const fileInput=document.getElementById("fileInput");
+const uploadBtn=document.getElementById("uploadBtn");
+const progressBar=document.getElementById("progressBar");
+const statusText=document.getElementById("status");
+
+uploadBtn.addEventListener("click",()=>{
+
+         const file=fileInput.files[0];
+         if(!file){
+             status.text.textContent='Please select a file first';
+             return;
+         }
+
+         const formData=new FormData();
+         formData.append('attachment',file);
+
+         const xhr=new XMLHttpRequest();
+         xhr.open('post','/ocr.php');
+
+         xhr.upload.onprogress=(event)=>{
+                if(event.lengthComputable){
+                   const percent=Math.round((event.loaded/event.total)*100);
+                   progressBar.value=percent;
+                   statusText.textContent="uploading";
+                }
+                  
+          }
+
+          xhr.onload=()=>{
+                    if(xhr.status >= 200 && xhr.status <=300){
+
+                                      statusText.textContent=`upload complete :${xhr.responseText}`
+                             
+                    }
+                    else{
+                                      statusText.textContent=`upload failed`;
+                    }
+               
+          }
+          xhr.onerror=()=>{
+
+                statusText.textContent='Network error occured';
+          }
+
+          xhr.send(formData);
+});
+
+}
+document.onreadystatechange = function () {
+    if (document.readyState == "complete") {
+        initApplication();
+    }
+}
+</script>
+</head>
+<body>
+<input type="file" id="fileInput" />
+<button type="button" id="uploadBtn">Upload</button>
+<progress id="progressBar" value="0" max="100"></progress>
+<p id="status"></p>
+
+
+</body>
+</html>
